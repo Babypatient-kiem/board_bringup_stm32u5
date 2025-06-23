@@ -23,7 +23,6 @@
 
 	aliases {
 		led0 = &led_0;
-		sw0 = &button_0;
 		watchdog0 = &iwdg;
 	};
 
@@ -31,18 +30,8 @@
 		compatible = "gpio-leds";
 
 		led_0: led0 {
-			gpios = <&gpiob 2 GPIO_ACTIVE_HIGH>;
+			gpios = <&gpioe 0 GPIO_ACTIVE_HIGH>;
 			label = "User LED";
-		};
-	};
-
-	gpio_keys {
-		compatible = "gpio-keys";
-
-		button_0: button0 {
-			label = "User Button";
-			gpios = <&gpioc 13 (GPIO_PULL_DOWN | GPIO_ACTIVE_HIGH)>;
-			zephyr,code = <INPUT_KEY_0>;
 		};
 	};
 };
@@ -54,7 +43,16 @@
 	pinctrl-names = "default";
 	cd-gpios = <&gpioa 8 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
 	status = "okay";
+	airoc-wifi {
+      status = "okay";
+      compatible = "infineon,airoc-wifi";
+
+      /* Wi-Fi control gpios */
+      wifi-reg-on-gpios    = <&gpiob 12 GPIO_ACTIVE_HIGH>;
+      wifi-host-wake-gpios = <&gpiod 3 GPIO_ACTIVE_HIGH>;
+    };
 };
+
 
 &clk_lsi {
 	status = "okay";
@@ -110,21 +108,79 @@ stm32_lp_tick_source: &lptim4 {
 };
 
 &usart1 {
-	status = "okay";
+	status = "disabled";
 	pinctrl-0 = <&usart1_tx_pa9 &usart1_rx_pa10>;
 	pinctrl-names = "default";
 	current-speed = <115200>;
 };
 
+&usart3{
+	status = "disabled";
+	pinctrl-0 = <&usart3_tx_pd8 &usart3_rx_pd9 &usart3_cts_pb13 &usart3_rts_pd12 >;
+	pinctrl-names = "default";
+	current-speed = <115200>;
+};
+
+&usart6{
+	status = "disabled";
+	pinctrl-0 = <&usart6_tx_pc6 &usart6_rx_pc7>;
+	pinctrl-names = "default";
+	current-speed = <115200>;
+};
+
+&uart7{
+	status = "disabled";
+	pinctrl-0 = <&uart7_tx_pe8 &uart7_rx_pe7  &uart7_cts_pe10 &uart7_rts_pe9>;
+	pinctrl-names = "default";
+	current-speed = <115200>;
+	hw-flow-control;
+ 
+	 bt_hci_uart: bt_hci_uart {
+		 compatible = "zephyr,bt-hci-uart";
+		 status = "disabled";
+ 
+		 murata-1yn {
+			 compatible = "infineon,cyw43xxx-bt-hci";
+			 bt-reg-on-gpios = <&gpioa 1 GPIO_ACTIVE_HIGH>;
+			 bt-host-wake-gpios = <&gpioa 2 GPIO_ACTIVE_HIGH>;
+			 bt-dev-wake-gpios = <&gpioe 15 GPIO_ACTIVE_HIGH>;
+		 };
+	 };
+ };
+
+
 &rng {
 	status = "okay";
 };
 
-&spi1 {
-	pinctrl-0 = <&spi1_nss_pa4 &spi1_sck_pa5 &spi1_miso_pa6 &spi1_mosi_pa7>;
+&i2c1 {
+	status = "disabled";
+	pinctrl-0 = <&i2c1_scl_pb6 &i2c1_sda_pb7>;
 	pinctrl-names = "default";
-	cs-gpios = <&gpioa 4 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
-	status = "okay";
+};
+
+&i2c4 {
+	status = "disabled";
+	pinctrl-0 = <&i2c4_scl_pb8 &i2c4_sda_pb9>;
+	pinctrl-names = "default";
+};
+
+&spi4 {
+	pinctrl-0 = <&spi4_sck_pe12 &spi4_miso_pe13 &spi4_mosi_pe14>;
+	pinctrl-names = "default";
+	status = "disabled";
+};
+
+&spi2 {
+	pinctrl-0 = <&spi2_sck_pb10 &spi2_miso_pc2 &spi2_mosi_pc1>;
+	pinctrl-names = "default";
+	status = "disabled";
+};
+
+&i2s1 {
+	pinctrl-0 = <&i2s1_ws_pa4 &i2s1_ck_pa5>;
+	pinctrl-names = "default";
+	status = "disabled";
 };
 
 &fdcan1 {
