@@ -1,0 +1,20 @@
+identifier: manikin_stm32h5_micromod
+name: Manikin stm32h5 micromod
+type: mcu
+arch: arm
+toolchain:
+  - zephyr
+  - gnuarmemb
+  - xtools
+ram: 640
+flash: 1024
+supported:
+  - gpio
+  - can
+  - uart
+  - entropy
+  - spi
+  - usb_device
+  - rtc
+  - watchdog
+vendor: manikin\

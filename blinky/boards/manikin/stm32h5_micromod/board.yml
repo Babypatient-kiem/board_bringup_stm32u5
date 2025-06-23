@@ -1,0 +1,6 @@
+board:
+  name: manikin_stm32h5_micromod
+  full_name: manikin STM32H5 micromod
+  vendor: manikin
+  socs:
+    - name: stm32h562xx
