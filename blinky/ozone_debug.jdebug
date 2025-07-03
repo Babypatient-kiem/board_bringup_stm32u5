@@ -22,6 +22,7 @@ void OnProjectLoad (void) {
   //
   // Dialog-generated settings
   //
+  Project.SetTraceSource ("Trace Pins");
   Project.AddPathSubstitute (".", "$(ProjectDir)");
   Project.SetDevice ("STM32H562VG");
   Project.SetHostIF ("USB", "");
@@ -150,8 +151,9 @@ void AfterTargetReset (void) {
 *
 **********************************************************************
 */
-//void BeforeTargetConnect (void) {
-//}
+void BeforeTargetConnect (void) {
+  Project.SetJLinkScript("./ST_STM32H563_TracePins.pex");
+}
 
 /*********************************************************************
 *

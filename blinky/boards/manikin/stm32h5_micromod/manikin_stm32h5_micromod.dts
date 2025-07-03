@@ -19,11 +19,13 @@
 		zephyr,code-partition = &slot0_partition;
 		zephyr,sram = &sram1;
 		zephyr,flash = &flash0;
+		zephyr,bt-hci = &bt_hci_uart;
 	};
 
 	aliases {
 		led0 = &led_0;
 		watchdog0 = &iwdg;
+		sw0 = &mybutton0;  // Link sw0 alias to your button
 	};
 
 	leds {
@@ -34,7 +36,16 @@
 			label = "User LED";
 		};
 	};
+	keys {
+        compatible = "gpio-keys";
+        
+        mybutton0: button_0 {
+            label = "User Button";
+            gpios = <&gpioc 13 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>;
+        };
+    };
 };
+
 
 &sdmmc1 {
 	pinctrl-0 = <&sdmmc1_d0_pc8 &sdmmc1_d1_pc9
@@ -74,7 +85,7 @@
 
 &rcc {
 	clocks = <&pll>;
-	clock-frequency = <DT_FREQ_M(240)>;
+	clock-frequency = <DT_FREQ_M(120)>;
 	ahb-prescaler = <1>;
 	apb1-prescaler = <2>;
 	apb2-prescaler = <1>;
@@ -84,9 +95,9 @@
 &pll {
     div-m = <4>;    /* 64 MHz / 4 = 16 MHz VCO input */
     mul-n = <30>;   /* 16 MHz × 30 = 480 MHz VCO */
-    div-p = <2>;    /* 480 MHz / 2 = 240 MHz SYSCLK */
-    div-q = <2>;    /* 480 MHz / 2 = 240 MHz */
-    div-r = <2>;    /* 480 MHz / 2 = 240 MHz */
+    div-p = <4>;    /* 480 MHz / 2 = 240 MHz SYSCLK */
+    div-q = <4>;    /* 480 MHz / 2 = 240 MHz */
+    div-r = <4>;    /* 480 MHz / 2 = 240 MHz */
     clocks = <&clk_hsi>;
     status = "okay";
 };
@@ -108,7 +119,7 @@ stm32_lp_tick_source: &lptim4 {
 };
 
 &usart1 {
-	status = "disabled";
+	status = "okay";
 	pinctrl-0 = <&usart1_tx_pa9 &usart1_rx_pa10>;
 	pinctrl-names = "default";
 	current-speed = <115200>;
@@ -129,7 +140,7 @@ stm32_lp_tick_source: &lptim4 {
 };
 
 &uart7{
-	status = "disabled";
+	status = "okay";
 	pinctrl-0 = <&uart7_tx_pe8 &uart7_rx_pe7  &uart7_cts_pe10 &uart7_rts_pe9>;
 	pinctrl-names = "default";
 	current-speed = <115200>;
@@ -137,7 +148,7 @@ stm32_lp_tick_source: &lptim4 {
  
 	 bt_hci_uart: bt_hci_uart {
 		 compatible = "zephyr,bt-hci-uart";
-		 status = "disabled";
+		 status = "okay";
  
 		 murata-1yn {
 			 compatible = "infineon,cyw43xxx-bt-hci";
