@@ -53,9 +53,9 @@
 				&sdmmc1_ck_pc12 &sdmmc1_cmd_pd2>;
 	pinctrl-names = "default";
 	cd-gpios = <&gpioa 8 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
-	status = "okay";
+	status = "disabled";
 	airoc-wifi {
-      status = "okay";
+      status = "disabled";
       compatible = "infineon,airoc-wifi";
 
       /* Wi-Fi control gpios */
@@ -74,6 +74,8 @@
     driving-capability = <2>;  /* 0=low, 1=medium-low, 2=medium-high, 3=high */
     status = "okay";
 };
+
+
 
 &clk_hsi {
 	status = "okay";
@@ -100,6 +102,10 @@
     div-r = <4>;    /* 480 MHz / 2 = 240 MHz */
     clocks = <&clk_hsi>;
     status = "okay";
+};
+
+&clk_hsi48 {
+	status = "okay";
 };
 
 &rtc {
@@ -140,13 +146,14 @@ stm32_lp_tick_source: &lptim4 {
 };
 
 &uart7{
-	status = "okay";
+	compatible = "st,stm32-uart";
+	clocks = <&rcc STM32_CLOCK(APB1, 30U)>;
+	resets = <&rctl STM32_RESET(APB1L, 30U)>;
 	pinctrl-0 = <&uart7_tx_pe8 &uart7_rx_pe7  &uart7_cts_pe10 &uart7_rts_pe9>;
 	pinctrl-names = "default";
 	current-speed = <115200>;
 	hw-flow-control;
- 
-	 bt_hci_uart: bt_hci_uart {
+	bt_hci_uart: bt_hci_uart {
 		 compatible = "zephyr,bt-hci-uart";
 		 status = "okay";
  
@@ -157,11 +164,13 @@ stm32_lp_tick_source: &lptim4 {
 			 bt-dev-wake-gpios = <&gpioe 15 GPIO_ACTIVE_HIGH>;
 		 };
 	 };
+	status = "okay";
  };
 
 
 &rng {
 	status = "okay";
+	compatible = "st,stm32-rng";
 };
 
 &i2c1 {

@@ -34,6 +34,7 @@ void OnProjectLoad (void) {
   //
   // User settings
   //
+  Edit.SysVar (VAR_TRACE_MAX_INST_CNT, 2000000000);
   File.Open ("$(ProjectDir)/build/manikin_stm32h5_micromod/zephyr/zephyr.elf");
 }
 
